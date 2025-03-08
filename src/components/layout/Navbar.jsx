@@ -18,8 +18,10 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import SearchIcon from '@mui/icons-material/Search';
+import HomeIcon from '@mui/icons-material/Home';
 
 const pages = [
+  { title: 'Home', path: '/', icon: <HomeIcon /> },
   { title: 'Destinations', path: '/destinations' },
   { title: 'Tour Packages', path: '/tour-packages' },
   { title: 'Why Choose Us', path: '/why-choose-us' },
@@ -44,6 +46,7 @@ const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
   const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
@@ -57,103 +60,91 @@ const Navbar = () => {
   const handleSearchSelect = (event, value) => {
     if (value) {
       navigate(value.path);
+      handleCloseNavMenu();
     }
   };
 
   return (
-    <AppBar position="sticky" sx={{ backgroundColor: 'white' }}>
+    <AppBar 
+      position="sticky" 
+      sx={{ 
+        backgroundColor: 'white',
+        boxShadow: '0 2px 4px rgba(0,0,0,0.08)'
+      }}
+    >
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          {/* Logo for desktop */}
-          <FlightTakeoffIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, color: 'primary.main' }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component={RouterLink}
-            to="/"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontWeight: 700,
-              color: 'primary.main',
-              textDecoration: 'none',
-            }}
-          >
-            TravelSapiens
-          </Typography>
-
-          {/* Mobile menu */}
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+        <Toolbar 
+          disableGutters 
+          sx={{ 
+            minHeight: { xs: '64px', sm: '72px' },
+            gap: { xs: 1, sm: 2 },
+            py: { xs: 1, sm: 1.5 }
+          }}
+        >
+          {/* Menu Icon - Mobile */}
+          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
               color="primary"
+              edge="start"
             >
               <MenuIcon />
             </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
-            >
-              {pages.map((page) => (
-                <MenuItem
-                  key={page.title}
-                  onClick={handleCloseNavMenu}
-                  component={RouterLink}
-                  to={page.path}
-                >
-                  <Typography textAlign="center">{page.title}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
           </Box>
 
-          {/* Logo for mobile */}
-          <FlightTakeoffIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1, color: 'primary.main' }} />
-          <Typography
-            variant="h5"
-            noWrap
-            component={RouterLink}
-            to="/"
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontWeight: 700,
+          {/* Logo and Brand - Both Mobile and Desktop */}
+          <Box sx={{ 
+            display: 'flex', 
+            alignItems: 'center',
+            minWidth: { xs: 'auto', md: '200px' }
+          }}>
+            <FlightTakeoffIcon sx={{ 
               color: 'primary.main',
-              textDecoration: 'none',
-            }}
-          >
-            TravelSapiens
-          </Typography>
+              fontSize: { xs: '1.5rem', sm: '2rem' },
+              mr: 1
+            }} />
+            <Typography
+              variant="h6"
+              noWrap
+              component={RouterLink}
+              to="/"
+              sx={{
+                fontWeight: 700,
+                color: 'primary.main',
+                textDecoration: 'none',
+                fontSize: { xs: '1.1rem', sm: '1.25rem', md: '1.5rem' },
+                letterSpacing: '0.5px'
+              }}
+            >
+              TravelSapiens
+            </Typography>
+          </Box>
 
           {/* Search Bar */}
-          <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', mx: 2 }}>
+          <Box sx={{ 
+            flex: { xs: 1, md: 0.7 },
+            display: 'flex', 
+            justifyContent: 'center',
+            px: { xs: 1, sm: 2, md: 4 }
+          }}>
             <Autocomplete
               options={searchSuggestions}
               getOptionLabel={(option) => option.title}
               onChange={handleSearchSelect}
-              sx={{ width: 300 }}
+              sx={{
+                width: '100%',
+                maxWidth: { xs: '100%', sm: '400px' },
+                '& .MuiInputBase-root': {
+                  height: { xs: '40px', sm: '44px' },
+                },
+              }}
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  placeholder="Search destinations & packages"
+                  placeholder={isSmall ? "Search" : "Search destinations & packages"}
                   size="small"
                   InputProps={{
                     ...params.InputProps,
@@ -180,20 +171,84 @@ const Navbar = () => {
             />
           </Box>
 
-          {/* Desktop menu */}
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+          {/* Desktop Navigation */}
+          <Box sx={{ 
+            display: { xs: 'none', md: 'flex' },
+            gap: { md: 1, lg: 2 },
+            justifyContent: 'flex-end',
+            flex: 1
+          }}>
             {pages.map((page) => (
               <Button
                 key={page.title}
                 component={RouterLink}
                 to={page.path}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'text.primary', display: 'block', mx: 2 }}
+                sx={{ 
+                  color: 'text.primary',
+                  fontSize: { md: '0.9rem', lg: '1rem' },
+                  px: { md: 1.5, lg: 2 },
+                  minWidth: 0,
+                  whiteSpace: 'nowrap',
+                  '&:hover': {
+                    backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                    color: 'primary.main'
+                  }
+                }}
+                startIcon={page.icon}
               >
                 {page.title}
               </Button>
             ))}
           </Box>
+
+          {/* Mobile Menu */}
+          <Menu
+            id="menu-appbar"
+            anchorEl={anchorElNav}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'left',
+            }}
+            open={Boolean(anchorElNav)}
+            onClose={handleCloseNavMenu}
+            sx={{
+              display: { xs: 'block', md: 'none' },
+              '& .MuiPaper-root': {
+                width: '100%',
+                maxWidth: '300px',
+                mt: 1
+              }
+            }}
+          >
+            {pages.map((page) => (
+              <MenuItem
+                key={page.title}
+                onClick={handleCloseNavMenu}
+                component={RouterLink}
+                to={page.path}
+                sx={{
+                  py: 1.5,
+                  '&:hover': {
+                    backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                    color: 'primary.main'
+                  }
+                }}
+              >
+                {page.icon && (
+                  <Box sx={{ mr: 2, display: 'flex', color: 'primary.main' }}>
+                    {page.icon}
+                  </Box>
+                )}
+                <Typography>{page.title}</Typography>
+              </MenuItem>
+            ))}
+          </Menu>
         </Toolbar>
       </Container>
     </AppBar>
