@@ -102,8 +102,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Contact
 
-Your Name - your.email@example.com
-Project Link: https://github.com/yourusername/travelsapiens
+Your Name - himanshusalve16@gmail.com
+Project Link:travelsapiens.vercel.app
 
 ## Acknowledgments
 
