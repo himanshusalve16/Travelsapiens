@@ -32,12 +32,12 @@ Before you begin, ensure you have the following installed:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/travelsapiens.git
+   git clone https://github.com/himanshusalve16/Travelsapiens.git
    ```
 
 2. Navigate to the project directory:
    ```bash
-   cd travelsapiens
+   cd Travelsapiens
    ```
 
 3. Install dependencies:
@@ -55,7 +55,7 @@ The application will open in your default browser at `http://localhost:3000`.
 ## Project Structure
 
 ```
-travelsapiens/
+Travelsapiens/
 ├── public/
 │   ├── images/
 │   └── index.html
