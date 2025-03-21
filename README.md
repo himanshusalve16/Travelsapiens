@@ -1,34 +1,23 @@
-# TravelSapiens - Your Indian Travel Adventure Partner
+# TravelSapiens
 
-TravelSapiens is a modern, dynamic travel agency website built with React.js and Material-UI. The website offers personalized tour packages, adventure trips, and vacations across India.
+A responsive travel website with modern UI design, built with React and Material-UI.
 
 ## Features
 
-- 🌟 Modern and responsive design
-- 🎨 Beautiful UI with Material Design
-- 🔍 Advanced search functionality
-- 🗺️ Interactive destination browsing
-- 📱 Mobile-friendly interface
-- 🔐 User authentication system
-- 💬 Contact form with map integration
-- 📦 Tour package management
-- 🌍 Dynamic content loading
+- Responsive travel website optimized for all screen sizes
+- Destinations and tour packages showcases
+- Dark/light theme toggle for user preference
+- WhatsApp integration for direct booking inquiries
+- Contact information in the About page
+- Fully client-side application with no backend dependencies
 
-## Tech Stack
+## Setup Instructions
 
-- React.js
-- Material-UI
-- React Router
-- Slick Carousel for image sliders
-- Axios for API calls
+### Prerequisites
 
-## Prerequisites
+- Node.js (v14 or higher)
 
-Before you begin, ensure you have the following installed:
-- Node.js (v14.0.0 or higher)
-- npm (v6.0.0 or higher)
-
-## Installation
+### Installation and Setup
 
 1. Clone the repository:
    ```bash
@@ -41,18 +30,21 @@ Before you begin, ensure you have the following installed:
    ```
 
 3. Install dependencies:
-   ```bash
+   ```
    npm install
    ```
 
 4. Start the development server:
-   ```bash
+   ```
    npm start
    ```
 
-The application will open in your default browser at `http://localhost:3000`.
+5. Open your browser and navigate to:
+   ```
+   http://localhost:3000
+   ```
 
-## Project Structure
+## Key Components
 
 ```
 Travelsapiens/
@@ -81,24 +73,50 @@ Travelsapiens/
 │   └── package.json
 ```
 
-## Available Scripts
+### Features
+- **Responsive Design**: Fully responsive for mobile, tablet, and desktop screens
+- **Theme Toggle**: Switch between light and dark themes
+- **WhatsApp Integration**: Direct message capability for tour bookings
+- **Image Gallery**: Showcase of beautiful travel destinations
+- **Material UI**: Modern and clean user interface components
 
-- `npm start` - Runs the app in development mode
-- `npm test` - Launches the test runner
-- `npm run build` - Builds the app for production
-- `npm run eject` - Ejects from Create React App
+## Customization
 
-## Contributing
+### Adding New Destinations
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+Add new destinations by updating the `destinationsData` array in `src/pages/Destinations.jsx`.
+
+### Modifying Tour Packages
+
+Edit the tour packages by updating the `packagesData` array in `src/pages/TourPackages.jsx`.
+
+### Contact Information
+
+Update the contact details in `src/pages/About.tsx` to reflect your business information.
+
+## Deployment
+
+The website can be deployed to:
+- Vercel
+- Netlify
+- GitHub Pages
+- Any other static site hosting service
+
+### Deployment to Vercel
+
+1. Install Vercel CLI:
+   ```
+   npm install -g vercel
+   ```
+
+2. Deploy:
+   ```
+   vercel
+   ```
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+MIT
 
 ## Contact
 
@@ -110,5 +128,5 @@ Project Link:travelsapiens.vercel.app
 - [Material-UI](https://mui.com/)
 - [React Router](https://reactrouter.com/)
 - [Create React App](https://create-react-app.dev/)
-- [Google Maps Platform](https://developers.google.com/maps)
+- [React Icons](https://react-icons.github.io/react-icons/)
 

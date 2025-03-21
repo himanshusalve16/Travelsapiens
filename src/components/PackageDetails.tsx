@@ -24,6 +24,7 @@ import {
   DirectionsBus,
   CheckCircle,
   Cancel,
+  WhatsApp,
 } from '@mui/icons-material';
 
 interface PackageDetailsProps {
@@ -52,6 +53,17 @@ const PackageDetails: React.FC<PackageDetailsProps> = ({
   onClose,
   package: pkg,
 }) => {
+  const handleBookViaWhatsApp = () => {
+    const phoneNumber = '919876543210'; // Replace with your WhatsApp number
+    const message = `Hello! I'm interested in booking the *${pkg.title}* package:\n\n` +
+      ` Location: ${pkg.location || 'Various locations'}\n` +
+      ` Duration: ${pkg.duration}\n` +
+      ` Price: ${pkg.price}\n\n` +
+      'Please provide booking details.';
+    
+    window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+  };
+
   return (
     <Dialog
       open={open}
@@ -163,76 +175,93 @@ const PackageDetails: React.FC<PackageDetailsProps> = ({
           </Grid>
 
           {/* Accommodation, Transportation, Meals */}
-          <Grid item xs={12} md={4}>
-            <Box sx={{ textAlign: 'center' }}>
-              <Hotel color="primary" sx={{ fontSize: 40, mb: 1 }} />
-              <Typography variant="h6" gutterBottom>
-                Accommodation
-              </Typography>
-              <Typography variant="body2">{pkg.accommodation}</Typography>
-            </Box>
-          </Grid>
+          {pkg.accommodation && pkg.transportation && pkg.meals && (
+          <Grid container item xs={12} spacing={2}>
+            <Grid item xs={12} md={4}>
+              <Box sx={{ textAlign: 'center' }}>
+                <Hotel color="primary" sx={{ fontSize: 40, mb: 1 }} />
+                <Typography variant="h6" gutterBottom>
+                  Accommodation
+                </Typography>
+                <Typography variant="body2">{pkg.accommodation}</Typography>
+              </Box>
+            </Grid>
 
-          <Grid item xs={12} md={4}>
-            <Box sx={{ textAlign: 'center' }}>
-              <DirectionsBus color="primary" sx={{ fontSize: 40, mb: 1 }} />
-              <Typography variant="h6" gutterBottom>
-                Transportation
-              </Typography>
-              <Typography variant="body2">{pkg.transportation}</Typography>
-            </Box>
-          </Grid>
+            <Grid item xs={12} md={4}>
+              <Box sx={{ textAlign: 'center' }}>
+                <DirectionsBus color="primary" sx={{ fontSize: 40, mb: 1 }} />
+                <Typography variant="h6" gutterBottom>
+                  Transportation
+                </Typography>
+                <Typography variant="body2">{pkg.transportation}</Typography>
+              </Box>
+            </Grid>
 
-          <Grid item xs={12} md={4}>
-            <Box sx={{ textAlign: 'center' }}>
-              <Restaurant color="primary" sx={{ fontSize: 40, mb: 1 }} />
-              <Typography variant="h6" gutterBottom>
-                Meals
-              </Typography>
-              <Typography variant="body2">{pkg.meals}</Typography>
-            </Box>
+            <Grid item xs={12} md={4}>
+              <Box sx={{ textAlign: 'center' }}>
+                <Restaurant color="primary" sx={{ fontSize: 40, mb: 1 }} />
+                <Typography variant="h6" gutterBottom>
+                  Meals
+                </Typography>
+                <Typography variant="body2">{pkg.meals}</Typography>
+              </Box>
+            </Grid>
           </Grid>
+          )}
 
           {/* Inclusions & Exclusions */}
-          <Grid item xs={12} md={6}>
-            <Typography variant="h6" gutterBottom>
-              Inclusions
-            </Typography>
-            <List dense>
-              {pkg.inclusions?.map((item, index) => (
-                <ListItem key={index}>
-                  <ListItemIcon>
-                    <CheckCircle fontSize="small" color="success" />
-                  </ListItemIcon>
-                  <ListItemText primary={item} />
-                </ListItem>
-              ))}
-            </List>
-          </Grid>
+          <Grid container item xs={12} spacing={2} sx={{ mt: 2 }}>
+            <Grid item xs={12} md={6}>
+              <Typography variant="h6" gutterBottom>
+                Inclusions
+              </Typography>
+              <List dense>
+                {pkg.inclusions?.map((item, index) => (
+                  <ListItem key={index}>
+                    <ListItemIcon>
+                      <CheckCircle fontSize="small" color="success" />
+                    </ListItemIcon>
+                    <ListItemText primary={item} />
+                  </ListItem>
+                ))}
+              </List>
+            </Grid>
 
-          <Grid item xs={12} md={6}>
-            <Typography variant="h6" gutterBottom>
-              Exclusions
-            </Typography>
-            <List dense>
-              {pkg.exclusions?.map((item, index) => (
-                <ListItem key={index}>
-                  <ListItemIcon>
-                    <Cancel fontSize="small" color="error" />
-                  </ListItemIcon>
-                  <ListItemText primary={item} />
-                </ListItem>
-              ))}
-            </List>
+            <Grid item xs={12} md={6}>
+              <Typography variant="h6" gutterBottom>
+                Exclusions
+              </Typography>
+              <List dense>
+                {pkg.exclusions?.map((item, index) => (
+                  <ListItem key={index}>
+                    <ListItemIcon>
+                      <Cancel fontSize="small" color="error" />
+                    </ListItemIcon>
+                    <ListItemText primary={item} />
+                  </ListItem>
+                ))}
+              </List>
+            </Grid>
           </Grid>
         </Grid>
       </DialogContent>
-      <DialogActions>
+      <DialogActions sx={{ p: 2, justifyContent: 'space-between' }}>
         <Button onClick={onClose} color="primary">
           Close
         </Button>
-        <Button variant="contained" color="primary">
-          Book Now
+        <Button 
+          variant="contained" 
+          color="success" 
+          startIcon={<WhatsApp />}
+          onClick={handleBookViaWhatsApp}
+          sx={{ 
+            px: 3, 
+            py: 1,
+            fontSize: '1rem',
+            '&:hover': { backgroundColor: '#075e54' } 
+          }}
+        >
+          Book via WhatsApp
         </Button>
       </DialogActions>
     </Dialog>

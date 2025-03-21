@@ -17,6 +17,7 @@ import {
   SelectChangeEvent,
 } from '@mui/material';
 import PackageDetails from '../components/PackageDetails';
+import { WhatsApp } from '@mui/icons-material';
 
 interface Destination {
   id: number;
@@ -338,6 +339,18 @@ const Destinations: React.FC = () => {
     );
   });
 
+  const handleBookViaWhatsApp = (destination: Destination) => {
+    const phoneNumber = '919876543210'; // Replace with your WhatsApp number
+    const message = `Hello! I'm interested in booking the *${destination.name}* destination package:\n\n` +
+      ` Location: ${destination.location}\n` +
+      ` Duration: ${destination.duration}\n` +
+      ` Price: ₹${destination.price}\n` +
+      ` Type: ${destination.type}\n\n` +
+      'Please provide booking details.';
+    
+    window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+  };
+
   return (
     <Box sx={{ py: 4 }}>
       <Container>
@@ -451,14 +464,27 @@ const Destinations: React.FC = () => {
                   >
                     From ₹{destination.price}
                   </Typography>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    fullWidth
-                    onClick={() => setSelectedDestination(destination)}
-                  >
-                    View Details
-                  </Button>
+                  <Box sx={{ mt: 2, display: 'flex', gap: 1 }}>
+                    <Button
+                      variant="outlined"
+                      sx={{ flex: 1 }}
+                      onClick={() => setSelectedDestination(destination)}
+                    >
+                      View Details
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="success"
+                      sx={{ flex: 1 }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleBookViaWhatsApp(destination);
+                      }}
+                      startIcon={<WhatsApp />}
+                    >
+                      Book Now
+                    </Button>
+                  </Box>
                 </CardContent>
               </Card>
             </Grid>

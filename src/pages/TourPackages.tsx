@@ -10,6 +10,7 @@ import {
   Button,
   Chip,
 } from '@mui/material';
+import { WhatsApp } from '@mui/icons-material';
 import PackageDetails from '../components/PackageDetails';
 
 interface TourPackage {
@@ -358,6 +359,18 @@ const TourPackages: React.FC = () => {
     setSelectedPackage(null);
   };
 
+  const handleBookViaWhatsApp = (pkg: TourPackage) => {
+    const phoneNumber = '919876543210'; // Replace with your WhatsApp number
+    const message = `Hello! I'm interested in booking the *${pkg.title}* tour package:\n\n` +
+      `📍 Location: ${pkg.location}\n` +
+      `⏱️ Duration: ${pkg.duration}\n` +
+      `💰 Price: ${pkg.price}\n` +
+      `🏷️ Type: ${pkg.type}\n\n` +
+      'Please provide booking details.';
+    
+    window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
+  };
+
   const filteredPackages = selectedCategory === 'All'
     ? packages
     : packages.filter(pkg => pkg.categories.includes(selectedCategory));
@@ -453,14 +466,40 @@ const TourPackages: React.FC = () => {
                     />
                   ))}
                 </Box>
-                <Button
-                  variant="contained"
-                  fullWidth
-                  sx={{ mt: 2 }}
-                  onClick={() => handleOpenDetails(pkg)}
-                >
-                  View Details
-                </Button>
+                <Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
+                  <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mb: 1 }}>
+                    {pkg.categories.map((category, idx) => (
+                      <Chip
+                        key={idx}
+                        label={category}
+                        size="small"
+                        color="primary"
+                        variant="outlined"
+                      />
+                    ))}
+                  </Box>
+                  <Box sx={{ display: 'flex', gap: 1 }}>
+                    <Button
+                      variant="outlined"
+                      sx={{ flex: 1 }}
+                      onClick={() => handleOpenDetails(pkg)}
+                    >
+                      View Details
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="success"
+                      sx={{ flex: 1 }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleBookViaWhatsApp(pkg);
+                      }}
+                      startIcon={<WhatsApp />}
+                    >
+                      Book Now
+                    </Button>
+                  </Box>
+                </Box>
               </CardContent>
             </Card>
           </Grid>

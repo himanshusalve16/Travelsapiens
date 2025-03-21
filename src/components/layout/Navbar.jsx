@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import {
   AppBar,
@@ -14,11 +14,16 @@ import {
   useMediaQuery,
   Autocomplete,
   TextField,
+  Tooltip,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import SearchIcon from '@mui/icons-material/Search';
 import HomeIcon from '@mui/icons-material/Home';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+import ContactSupportIcon from '@mui/icons-material/ContactSupport';
+import { ColorModeContext } from '../../App';
 
 const pages = [
   { title: 'Home', path: '/', icon: <HomeIcon /> },
@@ -45,6 +50,7 @@ const searchSuggestions = [
 const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const theme = useTheme();
+  const colorMode = useContext(ColorModeContext);
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
   const navigate = useNavigate();
@@ -68,7 +74,7 @@ const Navbar = () => {
     <AppBar 
       position="sticky" 
       sx={{ 
-        backgroundColor: 'white',
+        backgroundColor: theme.palette.mode === 'dark' ? 'background.paper' : 'white',
         boxShadow: '0 2px 4px rgba(0,0,0,0.08)'
       }}
     >
@@ -170,6 +176,20 @@ const Navbar = () => {
               )}
             />
           </Box>
+
+          {/* Theme Toggle Button */}
+          <Tooltip title={theme.palette.mode === 'dark' ? "Switch to Light Mode" : "Switch to Dark Mode"}>
+            <IconButton 
+              onClick={colorMode.toggleColorMode} 
+              color="primary"
+              sx={{ 
+                ml: { xs: 1, sm: 2 },
+                display: 'flex'
+              }}
+            >
+              {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+            </IconButton>
+          </Tooltip>
 
           {/* Desktop Navigation */}
           <Box sx={{ 
