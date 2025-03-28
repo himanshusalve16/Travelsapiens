@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import {
   Box,
   Container,
@@ -307,47 +308,64 @@ const destinations: Destination[] = [
 ];
 
 const Destinations: React.FC = () => {
-  const [filters, setFilters] = useState({
-    type: '',
-    season: '',
-    priceRange: [0, 50000],
-  });
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const selectedDestinationId = queryParams.get('id') ? parseInt(queryParams.get('id') as string, 10) : null;
 
   const [selectedDestination, setSelectedDestination] = useState<Destination | null>(null);
+  const [filterType, setFilterType] = useState<string>('All');
+  const [filterSeason, setFilterSeason] = useState<string>('All');
+  const [priceRange, setPriceRange] = useState<number[]>([0, 50000]);
+  const [openDetails, setOpenDetails] = useState<boolean>(false);
+
+  const filteredDestinations = destinations.filter((destination) => {
+    const matchesType = filterType === 'All' || destination.type === filterType;
+    const matchesSeason = filterSeason === 'All' || destination.season === filterSeason;
+    const matchesPrice = destination.price >= priceRange[0] && destination.price <= priceRange[1];
+    return matchesType && matchesSeason && matchesPrice;
+  });
+
+  // Effect to open details modal when selected via URL parameter
+  useEffect(() => {
+    if (selectedDestinationId) {
+      const destination = destinations.find(dest => dest.id === selectedDestinationId);
+      if (destination) {
+        setSelectedDestination(destination);
+        setOpenDetails(true);
+      }
+    }
+  }, [selectedDestinationId]);
 
   const handleFilterChange = (event: SelectChangeEvent) => {
     const { name, value } = event.target;
-    setFilters((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    if (name === 'type') {
+      setFilterType(value);
+    } else if (name === 'season') {
+      setFilterSeason(value);
+    }
   };
 
   const handlePriceChange = (_event: Event, newValue: number | number[]) => {
-    setFilters((prev) => ({
-      ...prev,
-      priceRange: newValue as number[],
-    }));
+    setPriceRange(newValue as number[]);
   };
 
-  const filteredDestinations = destinations.filter((destination) => {
-    return (
-      (filters.type === '' || destination.type === filters.type) &&
-      (filters.season === '' || destination.season === filters.season) &&
-      destination.price >= filters.priceRange[0] &&
-      destination.price <= filters.priceRange[1]
-    );
-  });
+  const handleOpenDetails = (destination: Destination) => {
+    setSelectedDestination(destination);
+    setOpenDetails(true);
+  };
+
+  const handleCloseDetails = () => {
+    setOpenDetails(false);
+    // Clear the id query parameter from the URL when closing the details
+    if (selectedDestinationId) {
+      const newUrl = window.location.pathname;
+      window.history.replaceState({}, '', newUrl);
+    }
+  };
 
   const handleBookViaWhatsApp = (destination: Destination) => {
     const phoneNumber = '919876543210'; // Replace with your WhatsApp number
-    const message = `Hello! I'm interested in booking the *${destination.name}* destination package:\n\n` +
-      ` Location: ${destination.location}\n` +
-      ` Duration: ${destination.duration}\n` +
-      ` Price: ₹${destination.price}\n` +
-      ` Type: ${destination.type}\n\n` +
-      'Please provide booking details.';
-    
+    const message = `Hi, I would like to book the "${destination.name}" tour. Can you provide more details?`;
     window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
@@ -374,7 +392,7 @@ const Destinations: React.FC = () => {
                 <InputLabel>Type</InputLabel>
                 <Select
                   name="type"
-                  value={filters.type}
+                  value={filterType}
                   label="Type"
                   onChange={handleFilterChange}
                 >
@@ -390,7 +408,7 @@ const Destinations: React.FC = () => {
                 <InputLabel>Season</InputLabel>
                 <Select
                   name="season"
-                  value={filters.season}
+                  value={filterSeason}
                   label="Season"
                   onChange={handleFilterChange}
                 >
@@ -404,7 +422,7 @@ const Destinations: React.FC = () => {
             <Grid item xs={12} md={4}>
               <Typography gutterBottom>Price Range (₹)</Typography>
               <Slider
-                value={filters.priceRange}
+                value={priceRange}
                 onChange={handlePriceChange}
                 valueLabelDisplay="auto"
                 min={0}
@@ -468,7 +486,7 @@ const Destinations: React.FC = () => {
                     <Button
                       variant="outlined"
                       sx={{ flex: 1 }}
-                      onClick={() => setSelectedDestination(destination)}
+                      onClick={() => handleOpenDetails(destination)}
                     >
                       View Details
                     </Button>
@@ -493,16 +511,16 @@ const Destinations: React.FC = () => {
 
         {selectedDestination && (
           <PackageDetails
-            open={!!selectedDestination}
-            onClose={() => setSelectedDestination(null)}
+            open={openDetails}
+            onClose={handleCloseDetails}
             package={{
               title: selectedDestination.name,
               image: selectedDestination.image,
-              description: selectedDestination.description,
               duration: selectedDestination.duration,
               price: `₹${selectedDestination.price}`,
-              type: selectedDestination.type,
+              description: selectedDestination.description,
               location: selectedDestination.location,
+              type: selectedDestination.type,
               highlights: selectedDestination.highlights,
               itinerary: selectedDestination.itinerary,
               inclusions: selectedDestination.inclusions,

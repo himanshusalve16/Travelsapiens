@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import {
   Box,
   Container,
@@ -348,129 +349,92 @@ const packages: TourPackage[] = [
 ];
 
 const TourPackages: React.FC = () => {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const selectedPackageId = queryParams.get('id') ? parseInt(queryParams.get('id') as string, 10) : null;
+
   const [selectedPackage, setSelectedPackage] = useState<TourPackage | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [openDetails, setOpenDetails] = useState<boolean>(false);
+
+  // Effect to open details modal when selected via URL parameter
+  useEffect(() => {
+    if (selectedPackageId) {
+      const tourPackage = packages.find(pkg => pkg.id === selectedPackageId);
+      if (tourPackage) {
+        setSelectedPackage(tourPackage);
+        setOpenDetails(true);
+      }
+    }
+  }, [selectedPackageId]);
 
   const handleOpenDetails = (pkg: TourPackage) => {
     setSelectedPackage(pkg);
+    setOpenDetails(true);
   };
 
   const handleCloseDetails = () => {
-    setSelectedPackage(null);
+    setOpenDetails(false);
+    // Clear the id query parameter from the URL when closing the details
+    if (selectedPackageId) {
+      const newUrl = window.location.pathname;
+      window.history.replaceState({}, '', newUrl);
+    }
   };
 
   const handleBookViaWhatsApp = (pkg: TourPackage) => {
     const phoneNumber = '919876543210'; // Replace with your WhatsApp number
-    const message = `Hello! I'm interested in booking the *${pkg.title}* tour package:\n\n` +
-      `📍 Location: ${pkg.location}\n` +
-      `⏱️ Duration: ${pkg.duration}\n` +
-      `💰 Price: ${pkg.price}\n` +
-      `🏷️ Type: ${pkg.type}\n\n` +
-      'Please provide booking details.';
-    
+    const message = `Hi, I would like to book the "${pkg.title}" tour package. Can you provide more details?`;
     window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
   };
 
-  const filteredPackages = selectedCategory === 'All'
-    ? packages
-    : packages.filter(pkg => pkg.categories.includes(selectedCategory));
-
   return (
-    <Container maxWidth="lg" sx={{ py: 8 }}>
-      <Typography variant="h2" align="center" gutterBottom>
-        Tour Packages
-      </Typography>
-      <Typography variant="h5" align="center" color="text.secondary" sx={{ mb: 4 }}>
-        Discover our curated collection of travel experiences
-      </Typography>
+    <Box sx={{ py: 6 }}>
+      <Container>
+        <Typography variant="h2" align="center" gutterBottom>
+          Tour Packages
+        </Typography>
+        <Typography variant="h5" align="center" color="text.secondary" sx={{ mb: 6 }}>
+          Discover our expertly crafted tour packages for an unforgettable Indian adventure
+        </Typography>
 
-      {/* Filter Buttons */}
-      <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mb: 6 }}>
-        {['All', 'Trek', 'Solo', 'Adventure'].map((category) => (
-          <Button
-            key={category}
-            variant={selectedCategory === category ? 'contained' : 'outlined'}
-            onClick={() => setSelectedCategory(category)}
-            sx={{
-              px: 3,
-              py: 1,
-              borderRadius: 2,
-              '&:hover': {
-                transform: 'translateY(-2px)',
-                transition: 'transform 0.2s ease-in-out',
-              },
-            }}
-          >
-            {category}
-          </Button>
-        ))}
-      </Box>
-
-      <Grid container spacing={4}>
-        {filteredPackages.map((pkg) => (
-          <Grid item key={pkg.id} xs={12} md={4}>
-            <Card
-              sx={{
+        <Grid container spacing={4}>
+          {packages.map((pkg) => (
+            <Grid item key={pkg.id} xs={12} md={6} lg={4}>
+              <Card sx={{
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
+                transition: 'transform 0.3s',
                 '&:hover': {
-                  transform: 'translateY(-4px)',
-                  transition: 'transform 0.3s ease-in-out',
-                },
-              }}
-            >
-              <CardMedia
-                component="img"
-                height="240"
-                image={pkg.image}
-                alt={pkg.title}
-              />
-              <CardContent sx={{ flexGrow: 1 }}>
-                <Typography gutterBottom variant="h5" component="h2">
-                  {pkg.title}
-                </Typography>
-                <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between' }}>
-                  <Typography color="text.secondary">
-                    {pkg.duration}
+                  transform: 'translateY(-8px)',
+                  boxShadow: '0 12px 20px -8px rgba(0,0,0,0.2)',
+                }
+              }}>
+                <CardMedia
+                  component="img"
+                  height="240"
+                  image={pkg.image}
+                  alt={pkg.title}
+                />
+                <CardContent sx={{ flexGrow: 1 }}>
+                  <Typography gutterBottom variant="h5" component="h2">
+                    {pkg.title}
                   </Typography>
-                  <Typography color="primary" fontWeight="bold">
-                    {pkg.price}
+                  <Box sx={{ mb: 2, display: 'flex', justifyContent: 'space-between' }}>
+                    <Typography variant="body2" color="text.secondary">
+                      {pkg.duration}
+                    </Typography>
+                    <Typography variant="subtitle1" color="primary.main" fontWeight="bold">
+                      {pkg.price}
+                    </Typography>
+                  </Box>
+                  <Typography variant="body2" color="text.secondary" paragraph>
+                    {pkg.description}
                   </Typography>
-                </Box>
-                <Typography variant="body2" color="text.secondary" paragraph>
-                  {pkg.description}
-                </Typography>
-                <Box sx={{ mt: 2 }}>
-                  <Typography variant="subtitle2" gutterBottom>
-                    Highlights:
-                  </Typography>
-                  <Grid container spacing={1}>
-                    {pkg.highlights.slice(0, 4).map((highlight, idx) => (
-                      <Grid item key={idx} xs={6}>
-                        <Typography variant="body2" color="text.secondary">
-                          • {highlight}
-                        </Typography>
-                      </Grid>
-                    ))}
-                  </Grid>
-                </Box>
-                <Box sx={{ mt: 2, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
-                  {pkg.categories.map((category, idx) => (
-                    <Chip
-                      key={idx}
-                      label={category}
-                      size="small"
-                      color="primary"
-                      variant="outlined"
-                    />
-                  ))}
-                </Box>
-                <Box sx={{ mt: 2, display: 'flex', flexDirection: 'column', gap: 1 }}>
-                  <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mb: 1 }}>
-                    {pkg.categories.map((category, idx) => (
+                  <Box sx={{ mt: 2, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                    {pkg.categories.map((category, index) => (
                       <Chip
-                        key={idx}
+                        key={index}
                         label={category}
                         size="small"
                         color="primary"
@@ -478,42 +442,59 @@ const TourPackages: React.FC = () => {
                       />
                     ))}
                   </Box>
-                  <Box sx={{ display: 'flex', gap: 1 }}>
-                    <Button
-                      variant="outlined"
-                      sx={{ flex: 1 }}
-                      onClick={() => handleOpenDetails(pkg)}
-                    >
-                      View Details
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="success"
-                      sx={{ flex: 1 }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleBookViaWhatsApp(pkg);
-                      }}
-                      startIcon={<WhatsApp />}
-                    >
-                      Book Now
-                    </Button>
-                  </Box>
+                </CardContent>
+                <Box sx={{ p: 2, pt: 0, display: 'flex', gap: 2 }}>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    sx={{ flex: 1 }}
+                    onClick={() => handleOpenDetails(pkg)}
+                  >
+                    View Details
+                  </Button>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    sx={{
+                      flex: 1,
+                      bgcolor: '#25D366',
+                      '&:hover': { bgcolor: '#128C7E' }
+                    }}
+                    startIcon={<WhatsApp />}
+                    onClick={() => handleBookViaWhatsApp(pkg)}
+                  >
+                    Book Now
+                  </Button>
                 </Box>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
 
-      {selectedPackage && (
-        <PackageDetails
-          open={!!selectedPackage}
-          package={selectedPackage}
-          onClose={handleCloseDetails}
-        />
-      )}
-    </Container>
+        {selectedPackage && (
+          <PackageDetails
+            open={openDetails}
+            onClose={handleCloseDetails}
+            package={{
+              title: selectedPackage.title,
+              image: selectedPackage.image,
+              duration: selectedPackage.duration,
+              price: selectedPackage.price,
+              description: selectedPackage.description,
+              location: selectedPackage.location,
+              highlights: selectedPackage.highlights,
+              itinerary: selectedPackage.itinerary,
+              inclusions: selectedPackage.inclusions,
+              exclusions: selectedPackage.exclusions,
+              accommodation: selectedPackage.accommodation,
+              transportation: selectedPackage.transportation,
+              meals: selectedPackage.meals,
+              type: selectedPackage.type,
+            }}
+          />
+        )}
+      </Container>
+    </Box>
   );
 };
 

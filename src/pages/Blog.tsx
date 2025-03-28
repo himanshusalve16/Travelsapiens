@@ -17,7 +17,7 @@ const blogPosts = [
   {
     id: 1,
     title: 'Essential Trekking Gear for Himalayan Adventures',
-    image: '/images/trekking-gear.jpg',
+    image: 'https://himalayandreamtreks.in/wp-content/uploads/2024/05/Trek-Gears-1.webp',
     description: `A comprehensive guide to packing for your Himalayan trek. Learn about essential gear, clothing, and equipment you'll need for a safe and comfortable trekking experience.`,
     author: 'Rahul Sharma',
     date: 'May 15, 2024',
@@ -52,7 +52,7 @@ const blogPosts = [
   {
     id: 2,
     title: 'Travel Safety Tips for Solo Travelers in India',
-    image: '/images/solo-travel.jpg',
+    image: 'https://cdn.prod.website-files.com/60100d26d33c7cce48258afd/6633d21619ea53a6ae3db526_banner.webp',
     description: 'Important safety guidelines and tips for solo travelers exploring India. From transportation to accommodation, learn how to stay safe while having an amazing journey.',
     author: 'Priya Patel',
     date: 'May 12, 2024',
@@ -87,7 +87,7 @@ const blogPosts = [
   {
     id: 3,
     title: 'Monsoon Travel Guide: Best Practices and Destinations',
-    image: '/images/monsoon-travel.jpg',
+    image: 'https://www.oyorooms.com/travel-guide/wp-content/uploads/2019/09/shutterstock_787033735.webp',
     description: 'Make the most of your monsoon travels with these expert tips and discover the best destinations to visit during the rainy season.',
     author: 'Amit Kumar',
     date: 'May 10, 2024',

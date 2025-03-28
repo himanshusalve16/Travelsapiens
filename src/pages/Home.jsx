@@ -63,24 +63,28 @@ const searchSuggestions = [
 
 const featuredDestinations = [
   {
+    id: 1,
     title: 'Taj Mahal, Agra',
     image: 'https://media.istockphoto.com/id/519330110/photo/taj-mahal-agra-india-monument-of-love-in-blue-sky.jpg?s=612x612&w=0&k=20&c=Uma6Q7KduznA6jUKcSquFP1iHHiw8UXcZEYVLONrmaQ=',
     description: 'Experience the magnificent symbol of eternal love',
     price: 'From ₹15,000',
   },
   {
+    id: 2,
     title: 'Kerala Backwaters',
     image: 'https://www.peakadventuretour.com/assets/imgs/kerala-tourism-04.webp',
     description: 'Cruise through serene backwaters in a houseboat',
     price: 'From ₹20,000',
   },
   {
+    id: 3,
     title: 'Rajasthan Heritage',
     image: 'https://www.jaisalkot.com/wp-content/uploads/2018/03/AdobeStock_103261625-Latest.jpg',
     description: 'Explore royal palaces and majestic forts',
     price: 'From ₹25,000',
   },
   {
+    id: 4,
     title: 'Himalayan Adventure',
     image: 'https://img.freepik.com/free-photo/horizontal-shot-group-people-hiking-mountains-covered-snow-cloudy-sky_181624-44954.jpg?ga=GA1.1.1573898815.1728492290&semt=ais_hybrid',
     description: 'Trek through the mighty Himalayas',
@@ -90,6 +94,7 @@ const featuredDestinations = [
 
 const popularTourPackages = [
   {
+    id: 1,
     title: 'Golden Triangle Tour',
     image: 'https://media.istockphoto.com/id/940867852/photo/decorated-indian-elephant-in-front-of-amer-fort-palace-jaipur-intricately-carved-gateway-amber.jpg?s=612x612&w=0&k=20&c=Q74EPP-eWsPTWJ4zB6UXNCDqN510UfZsyQOhZBJNB1g=',
     duration: '6 Days',
@@ -99,6 +104,7 @@ const popularTourPackages = [
     categories: ['Cultural', 'Heritage']
   },
   {
+    id: 2,
     title: 'Kerala Backwaters Cruise',
     image: 'https://www.peakadventuretour.com/assets/imgs/kerala-tourism-04.webp',
     duration: '5 Days',
@@ -108,6 +114,7 @@ const popularTourPackages = [
     categories: ['Solo', 'Adventure']
   },
   {
+    id: 3,
     title: 'Himalayan Adventure Trek',
     image: 'https://img.freepik.com/free-photo/horizontal-shot-group-people-hiking-mountains-covered-snow-cloudy-sky_181624-44954.jpg?ga=GA1.1.1573898815.1728492290&semt=ais_hybrid',
     duration: '8 Days',
@@ -117,6 +124,7 @@ const popularTourPackages = [
     categories: ['Trek', 'Adventure']
   },
   {
+    id: 4,
     title: 'Ladakh Bike Expedition',
     image: 'https://scontent.fnag1-2.fna.fbcdn.net/v/t1.6435-9/33245597_183454369041075_2999713040514940928_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=BclA4EqHHxYQ7kNvgFXpxOg&_nc_oc=AdipgwYFWW61Eu2xE2x2eWsgC0bfzn9TPaU-rmCIW_MM-OycBlV18guzO4RRmK0SMxiskDU42WRp3kf_fmX11Fr1&_nc_zt=23&_nc_ht=scontent.fnag1-2.fna&_nc_gid=A2_oEl9n0qM4T0zMFjPcH3h&oh=00_AYFgRRZGa-ZX-0VRh7jQapEwz7Lyc5BzJ3TCkWNy65BeGQ&oe=67F3A483',
     duration: '10 Days',
@@ -126,6 +134,7 @@ const popularTourPackages = [
     categories: ['Adventure', 'Solo']
   },
   {
+    id: 5,
     title: 'Valley of Flowers Trek',
     image: 'https://resize.indiatvnews.com/en/resize/newbucket/1200_-/2024/05/bread-1-1717069987.webp',
     duration: '7 Days',
@@ -135,6 +144,7 @@ const popularTourPackages = [
     categories: ['Trek', 'Solo']
   },
   {
+    id: 6,
     title: 'Spiti Valley Expedition',
     image: 'https://viacation.com/wp-content/uploads/2025/02/zgu7fgfjy5e275mfrwhw21sujkmz_shutterstock_2361426719.webp',
     duration: '9 Days',
@@ -276,6 +286,14 @@ const Home = () => {
     }
   };
 
+  const handleDestinationClick = (destinationId) => {
+    navigate(`/destinations?id=${destinationId}`);
+  };
+
+  const handlePackageClick = (packageId) => {
+    navigate(`/tour-packages?id=${packageId}`);
+  };
+
   const filteredPackages = selectedCategory === 'All'
     ? popularTourPackages
     : popularTourPackages.filter(pkg => pkg.categories.includes(selectedCategory));
@@ -415,8 +433,10 @@ const Home = () => {
                   '&:hover': {
                     transform: 'translateY(-4px)',
                     transition: 'transform 0.3s ease-in-out',
+                    cursor: 'pointer',
                   },
                 }}
+                onClick={() => handleDestinationClick(destination.id)}
               >
                 <CardMedia
                   component="img"
@@ -492,8 +512,10 @@ const Home = () => {
                   '&:hover': {
                     transform: 'translateY(-4px)',
                     transition: 'transform 0.3s ease-in-out',
+                    cursor: 'pointer',
                   },
                 }}
+                onClick={() => handlePackageClick(pkg.id)}
               >
                 <CardMedia
                   component="img"
