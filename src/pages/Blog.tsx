@@ -25,7 +25,6 @@ const blogPosts = [
     readTime: '8 min read',
     content: `
       1. Clothing Essentials:
-      - Moisture-wicking base layers
       - Insulating mid-layers
       - Waterproof outer shell
       - Sturdy trekking pants
