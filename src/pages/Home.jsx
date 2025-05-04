@@ -338,7 +338,7 @@ const Home = () => {
             bottom: 0,
             backgroundColor: 'rgba(0, 0, 0, 0.2)',
             display: 'flex',
-            alignItems: 'center',
+            alignItems: '',
             justifyContent: 'center',
           }}
         >
