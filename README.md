@@ -1,15 +1,26 @@
-# TravelSapiens
+# TravelSapiens - Your Indian Travel Adventure Partner
 
-A responsive travel website with modern UI design, built with React and Material-UI.
+TravelSapiens is a modern, dynamic travel agency website built with React.js and Material-UI. The website offers personalized tour packages, adventure trips, and vacations across India.
 
 ## Features
 
-- Responsive travel website optimized for all screen sizes
-- Destinations and tour packages showcases
-- Dark/light theme toggle for user preference
-- WhatsApp integration for direct booking inquiries
-- Contact information in the About page
-- Fully client-side application with no backend dependencies
+- 🌟 Modern and responsive design
+- 🎨 Beautiful UI with Material Design
+- 🔍 Advanced search functionality
+- 🗺️ Interactive destination browsing
+- 📱 Mobile-friendly interface
+- 🔐 User authentication system
+- 💬 Contact form with map integration
+- 📦 Tour package management
+- 🌍 Dynamic content loading
+
+## Tech Stack
+
+- React.js
+- Material-UI
+- React Router
+- Slick Carousel for image sliders
+- Axios for API calls
 
 ## Setup Instructions
 
