@@ -290,7 +290,7 @@ const packages: TourPackage[] = [
   {
     id: 4,
     title: 'Ladakh Bike Expedition',
-    image: 'https://scontent.fnag1-2.fna.fbcdn.net/v/t1.6435-9/33245597_183454369041075_2999713040514940928_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=BclA4EqHHxYQ7kNvgFXpxOg&_nc_oc=AdipgwYFWW61Eu2xE2x2eWsgC0bfzn9TPaU-rmCIW_MM-OycBlV18guzO4RRmK0SMxiskDU42WRp3kf_fmX11Fr1&_nc_zt=23&_nc_ht=scontent.fnag1-2.fna&_nc_gid=A2_oEl9n0qM4T0zMFjPcH3h&oh=00_AYFgRRZGa-ZX-0VRh7jQapEwz7Lyc5BzJ3TCkWNy65BeGQ&oe=67F3A483',
+    image: 'https://blog.capertravelindia.com/wp-content/uploads/2017/05/Bike-Tour.jpg',
     description: 'Experience the thrill of riding through the highest motorable roads in the world.',
     duration: '10 Days',
     price: '₹65,000',

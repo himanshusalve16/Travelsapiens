@@ -40,6 +40,7 @@ import {
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { motion } from 'framer-motion';
 
 const heroImages = [
   'https://static.wixstatic.com/media/3eb94e_0105354fad944a61ab0277259a645da4~mv2.jpg/v1/fill/w_1200,h_352,al_c,q_85,enc_avif,quality_auto/3eb94e_0105354fad944a61ab0277259a645da4~mv2.jpg',
@@ -126,7 +127,7 @@ const popularTourPackages = [
   {
     id: 4,
     title: 'Ladakh Bike Expedition',
-    image: 'https://scontent.fnag1-2.fna.fbcdn.net/v/t1.6435-9/33245597_183454369041075_2999713040514940928_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=BclA4EqHHxYQ7kNvgFXpxOg&_nc_oc=AdipgwYFWW61Eu2xE2x2eWsgC0bfzn9TPaU-rmCIW_MM-OycBlV18guzO4RRmK0SMxiskDU42WRp3kf_fmX11Fr1&_nc_zt=23&_nc_ht=scontent.fnag1-2.fna&_nc_gid=A2_oEl9n0qM4T0zMFjPcH3h&oh=00_AYFgRRZGa-ZX-0VRh7jQapEwz7Lyc5BzJ3TCkWNy65BeGQ&oe=67F3A483',
+    image: 'https://blog.capertravelindia.com/wp-content/uploads/2017/05/Bike-Tour.jpg',
     duration: '10 Days',
     price: '₹65,000',
     description: 'Experience the thrill of riding through the highest motorable roads',
@@ -277,14 +278,7 @@ const stats = [
 
 const Home = () => {
   const navigate = useNavigate();
-  const [searchValue, setSearchValue] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('All');
-
-  const handleSearchSelect = (event, value) => {
-    if (value) {
-      navigate(value.path);
-    }
-  };
 
   const handleDestinationClick = (destinationId) => {
     navigate(`/destinations?id=${destinationId}`);
@@ -343,67 +337,101 @@ const Home = () => {
           }}
         >
           <Container maxWidth="md">
-            <Typography
-              variant="h1"
-              color="white"
-              align="center"
-              gutterBottom
-              sx={{ fontWeight: 700 }}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
             >
-              Discover Incredible India
-            </Typography>
-            <Typography
-              variant="h5"
-              color="white"
-              align="center"
-              sx={{ mb: 4 }}
+              <Typography
+                variant="h1"
+                color="white"
+                align="center"
+                gutterBottom
+                sx={{ 
+                  fontWeight: 700,
+                  textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
+                }}
+              >
+                Discover Incredible India
+              </Typography>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
             >
-              Experience the magic of diverse cultures, landscapes, and traditions
-            </Typography>
-
-            {/* Search Bar */}
-            <Paper
-              sx={{
-                p: 2,
-                maxWidth: 600,
-                mx: 'auto',
-                borderRadius: 2,
-              }}
+              <Typography
+                variant="h5"
+                color="white"
+                align="center"
+                sx={{ 
+                  mb: 4, 
+                  textShadow: '1px 1px 2px rgba(0,0,0,0.3)',
+                }}
+              >
+                Experience the magic of diverse cultures, landscapes, and traditions
+              </Typography>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
             >
-              <Autocomplete
-                value={searchValue}
-                onChange={handleSearchSelect}
-                options={searchSuggestions}
-                getOptionLabel={(option) => option.title}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    placeholder="Search destinations, tours, or experiences..."
-                    fullWidth
-                    InputProps={{
-                      ...params.InputProps,
-                      startAdornment: (
-                        <Search color="action" sx={{ mr: 1 }} />
-                      ),
-                    }}
-                  />
-                )}
-                renderOption={(props, option) => (
-                  <Box component="li" {...props}>
-                    <Typography>
-                      {option.title}
-                      <Typography
-                        component="span"
-                        color="text.secondary"
-                        sx={{ ml: 1, fontSize: '0.875rem' }}
-                      >
-                        ({option.type})
-                      </Typography>
-                    </Typography>
-                  </Box>
-                )}
-              />
-            </Paper>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  gap: 2,
+                  mt: 4,
+                }}
+              >
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                  endIcon={<ArrowForward />}
+                  onClick={() => navigate('/tour-packages')}
+                  sx={{
+                    px: 4,
+                    py: 1.5,
+                    borderRadius: 2,
+                    fontWeight: 'bold',
+                    '&:hover': {
+                      transform: 'translateY(-3px)',
+                      transition: 'transform 0.2s',
+                      boxShadow: '0 6px 20px rgba(0,0,0,0.2)',
+                    },
+                  }}
+                >
+                  Explore Tours
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="inherit"
+                  size="large"
+                  onClick={() => navigate('/destinations')}
+                  sx={{
+                    px: 4,
+                    py: 1.5,
+                    borderRadius: 2,
+                    fontWeight: 'bold',
+                    backgroundColor: 'rgba(255,255,255,0.1)',
+                    borderColor: 'white',
+                    color: 'white',
+                    '&:hover': {
+                      transform: 'translateY(-3px)',
+                      transition: 'transform 0.2s',
+                      backgroundColor: 'rgba(255,255,255,0.2)',
+                      borderColor: 'white',
+                    },
+                  }}
+                >
+                  View Destinations
+                </Button>
+              </Box>
+            </motion.div>
           </Container>
         </Box>
       </Box>
